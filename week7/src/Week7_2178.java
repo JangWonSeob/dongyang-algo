@@ -2,68 +2,73 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
 
+
 public class Week7_2178 {
-    public static int N, M;
-    public static int[][] graph = new int[200][200];
-    //이동할 네 가지 방향 정의 {상, 하, 좌 ,우}
+    public static int n, m;
+    public static int[][] graph = new int[201][201];
+
     public static int dx[] = {-1, 1, 0, 0};
     public static int dy[] = {0, 0, -1, 1};
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        // N, M 입력
-        N = scanner.nextInt();
-        M = scanner.nextInt();
-        scanner.nextLine(); //버퍼 지우기
-        System.out.println("n " + N + "m" + M);
-        // 2차원 배열의 정보 입력 받기
-        for (int i = 0; i < N; i++) {
-            String str = scanner.nextLine();
-            for (int j = 0; j < M; j++) {
-                graph[i][j] = str.charAt(j) - '0';
-            }
-        }
-        scanner.close();
-        System.out.println(" result = " + bfs(0, 0));
-    }
-
     public static int bfs(int x, int y) {
-        Queue<Node> queue = new LinkedList<>();
-        queue.add(new Node(x, y));
-        while (!queue.isEmpty()) {
-            Node node = queue.poll();
+        Queue<Node> q = new LinkedList<>();
+        q.offer(new Node(x, y));
+
+        while (!q.isEmpty()) {
+            Node node = q.poll();
             x = node.getX();
             y = node.getY();
             for (int i = 0; i < 4; i++) {
                 int nx = x + dx[i];
                 int ny = y + dy[i];
-                //미로 범위를 벗어나면 무시
-                if (nx < 0 || ny < 0 || nx >= N || ny >= M) continue;
-                //한 번 왔던 위치면 무시 , 괴물이 있는 위치면 무시
+
+                if (nx < 0 || nx >= n || ny < 0 || ny >= m) continue;
+
+                if (graph[nx][ny] == 0) continue;
+
                 if (graph[nx][ny] == 1) {
                     graph[nx][ny] = graph[x][y] + 1;
-                    queue.add(new Node(nx, ny));
+                    q.offer(new Node(nx, ny));
                 }
             }
         }
-        return graph[N - 1][M - 1];
+        return graph[n - 1][m - 1];
     }
 
-    static class Node {
-        final private int x;
-        final private int y;
 
-        Node(int x, int y) {
-            this.x = x;
-            this.y = y;
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        n = sc.nextInt();
+        m = sc.nextInt();
+        sc.nextLine();
+
+        for (int i = 0; i < n; i++) {
+            String str = sc.nextLine();
+            for (int j = 0; j < m; j++) {
+                graph[i][j] = str.charAt(j) - '0';
+            }
         }
 
-        public int getX() {
-            return x;
-        }
+        System.out.println(bfs(0, 0));
+    }
 
-        public int getY() {
-            return y;
-        }
+}
+
+class Node {
+    private int x;
+    private int y;
+
+    public Node(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public int getX() {
+        return this.x;
+    }
+
+    public int getY() {
+        return this.y;
     }
 }
