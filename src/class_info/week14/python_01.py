@@ -1,31 +1,20 @@
-## 배열의 모든 왼쪽 값은 자신의 값보다 작고, 모든 오른쪽 값은 자신의값보다 큰 항목 찾기
+## 구간 합 빠르게 계산하기
 
-arr = [5, 1, 4, 3, 6, 8, 10, 7, 9]
-n = len(arr)
+n, m = map(int, input().split())
 
-leftMax = [0] * (n - 1)
-rightMin = [0] * (n - 1)
+arr = list(map(int, input().split()))
 
-leftMax.append(-99999)
+sum_arr = []
+result = []
 
-for i in range(1, n):
-    leftMax[i] = min(leftMax[i - 1], arr[i - 1])
+sumValue = 0
+sum_arr.append(sumValue)
 
-rightMin.append(99999)
-for i in reversed(range(n - 2)):
-    if rightMin[i + 1] > arr[i + 1]:
-        rightMin[i] = arr[i + i]
-    else:
-        rightMin[i] = rightMin[i + 1]
+for i in range(len(arr)):
+    sum_arr.append(sum(arr[:i + 1]))
 
-yn = True
+for i in range(m):
+    start, end = map(int, input().split())
+    result.append(sum_arr[end] - sum_arr[start - 1])
 
-for i in reversed(range(n)):
-    if leftMax[i] < arr[i] < rightMin[i]:
-        print(i)
-        yn = False
-        break
-    rightMin[i] = min(rightMin[i], arr[i])
-
-if yn:
-    print(-1)
+print(result)
