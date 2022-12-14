@@ -3,7 +3,7 @@ package class_info.week9;
 import java.util.Scanner;
 
 public class Java_01 {
-    // 비트 연산자
+    // 비트 연산자(홀수, 짝수 구분)
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
